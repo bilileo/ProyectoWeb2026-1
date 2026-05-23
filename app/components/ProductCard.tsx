@@ -11,7 +11,7 @@ interface Product {
   stock: number;
   description: string;
   category_id: string;
-  barcode?: string; // <-- Agregado para soportar el código de barras
+  barcode?: string; 
   categories?: {
     name: string;
   };
@@ -64,7 +64,7 @@ export default function ProductCard({
       price: parseFloat(formData.get('price') as string),
       stock: parseInt(formData.get('stock') as string),
       category_id: formData.get('category_id') as string,
-      barcode: formData.get('barcode') as string, // <-- Capturamos el código de barras
+      barcode: formData.get('barcode') as string, 
       description: formData.get('description') as string,
       imageUrl: editImagePreview || undefined,
     };
@@ -185,7 +185,7 @@ export default function ProductCard({
             </div>
           </div>
 
-          {/* <-- NUEVO CAMPO: Código de Barras --> */}
+          {/* Código de Barras */}
           <div>
             <label className="text-xs font-semibold text-slate-600 mb-1.5 block">Cód. Barras / SKU</label>
             <input
@@ -214,7 +214,7 @@ export default function ProductCard({
           <div>
             <label className="text-xs font-semibold text-slate-600 mb-1.5 block">Imagen</label>
 
-            {/* Modo: archivo o URL */}
+            {/* archivo o URL */}
             <div className="flex gap-2 mb-2">
               <button
                 type="button"
@@ -252,7 +252,7 @@ export default function ProductCard({
               </div>
             )}
 
-            {/* Input según modo */}
+            {/* Input */}
             {editImageMode === 'file' && (
               <input
                 type="file"

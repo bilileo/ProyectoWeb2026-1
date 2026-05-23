@@ -25,7 +25,7 @@ export default function ReportsDashboard() {
 
   if (!mounted) return null;
 
-  // --- CÁLCULOS FINANCIEROS (KPIs) ---
+  // Calculamos KPIs clave
   const totalRevenue = sales.reduce((sum, sale) => sum + sale.total, 0);
   const totalTickets = sales.length;
   const averageTicket = totalTickets > 0 ? totalRevenue / totalTickets : 0;
@@ -34,7 +34,7 @@ export default function ReportsDashboard() {
     return sum + sale.items.reduce((itemSum, item) => itemSum + item.quantity, 0);
   }, 0);
 
-  // --- ANÁLISIS DE PRODUCTOS ---
+  // Análisis de rendimiento por producto
   const productPerformance: Record<string, ProductStats> = {};
   sales.forEach(sale => {
     sale.items.forEach(item => {
@@ -50,11 +50,11 @@ export default function ReportsDashboard() {
     .sort((a, b) => b.revenueGenerated - a.revenueGenerated)
     .slice(0, 5);
 
-  // --- OPTIMIZACIÓN UI: Solo mostramos los últimos 100 en pantalla ---
+  // Solo mostramos los últimos 100 en pantalla
   const reversedSales = [...sales].reverse();
   const displayedSales = reversedSales.slice(0, 100);
 
-  // --- GENERACIÓN DEL PDF MASIVO ---
+  // Función para generar el PDF del reporte maestro
   const generatePDF = () => {
     setIsExporting(true);
     
@@ -62,17 +62,17 @@ export default function ReportsDashboard() {
       const doc = new jsPDF();
       const dateStr = new Date().toLocaleDateString('es-MX');
 
-      // 1. Cabecera del Documento
+      // Cabecera del Documento
       doc.setFontSize(20);
-      doc.setTextColor(15, 23, 42); // slate-900
+      doc.setTextColor(15, 23, 42); 
       doc.text('.ComPonents - Reporte Financiero', 14, 22);
       
       doc.setFontSize(10);
-      doc.setTextColor(100, 116, 139); // slate-500
+      doc.setTextColor(100, 116, 139); 
       doc.text(`Generado el: ${new Date().toLocaleString('es-MX')}`, 14, 30);
       doc.text(`Total de registros procesados: ${totalTickets}`, 14, 35);
 
-      // 2. Resumen de KPIs (Tabla pequeña)
+      // Resumen de KPIs 
       autoTable(doc, {
         startY: 45,
         head: [['Ingresos Brutos', 'Ticket Promedio', 'Ventas Totales', 'Piezas Movidas']],
@@ -86,7 +86,7 @@ export default function ReportsDashboard() {
         headStyles: { fillColor: [15, 23, 42] },
       });
 
-      // 3. Libro Mayor (Procesa TODOS los miles de registros, paginando automáticamente)
+      // Libro Mayor (Procesa TODOS los miles de registros, paginando automáticamente)
       // Mapeamos los datos para que sean legibles en el PDF
       const tableData = reversedSales.map(sale => {
         // Juntamos todos los items en un solo string con saltos de línea
@@ -106,7 +106,7 @@ export default function ReportsDashboard() {
         body: tableData,
         theme: 'striped',
         styles: { fontSize: 8, cellPadding: 3 },
-        headStyles: { fillColor: [71, 85, 105] }, // slate-600
+        headStyles: { fillColor: [71, 85, 105] }, 
         columnStyles: {
           0: { cellWidth: 25 },
           1: { cellWidth: 25 },
@@ -115,11 +115,9 @@ export default function ReportsDashboard() {
         },
         margin: { top: 15 },
         didDrawPage: function (data) {
-          // Usamos data.pageNumber que viene nativo y seguro en jspdf-autotable
           const str = 'Página ' + data.pageNumber;
           doc.setFontSize(8);
           const pageSize = doc.internal.pageSize;
-          // Manejo seguro para versiones nuevas y viejas de jsPDF
           const pageHeight = typeof pageSize.getHeight === 'function' 
             ? pageSize.getHeight() 
             : pageSize.height;
@@ -131,7 +129,7 @@ export default function ReportsDashboard() {
       // Guardar archivo
       doc.save(`.ComPonents_Reporte_${dateStr.replace(/\//g, '-')}.pdf`);
       setIsExporting(false);
-    }, 100); // Pequeño timeout para permitir que el botón cambie a estado de "Cargando"
+    }, 100); // Pequeña demora para mostrar el estado de "Generando PDF..." antes de iniciar el proceso pesado
   };
 
   return (
@@ -142,7 +140,7 @@ export default function ReportsDashboard() {
         {/* Cabecera con Botón de Exportación */}
         <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Inteligencia Financiera</h1>
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Análisis financiero</h1>
             <p className="text-slate-500 mt-1">Análisis de rendimiento, flujo de caja y movimientos de inventario.</p>
           </div>
           
@@ -165,7 +163,7 @@ export default function ReportsDashboard() {
           </button>
         </div>
 
-        {/* --- TARJETAS DE KPIs --- */}
+        {/* TARJETAS DE KPIs */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
             <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Ingresos Brutos</h3>
@@ -197,7 +195,7 @@ export default function ReportsDashboard() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
-          {/* --- TOP PRODUCTOS --- */}
+          {/* TOP PRODUCTOS */}
           <div className="lg:col-span-1 bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
             <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
               Productos Estrella
@@ -233,7 +231,7 @@ export default function ReportsDashboard() {
             )}
           </div>
 
-          {/* --- LIBRO MAYOR (INTERFAZ OPTIMIZADA) --- */}
+          {/* LIBRO MAYOR */}
           <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
             <div className="p-6 border-b border-slate-100 flex justify-between items-end">
               <div>

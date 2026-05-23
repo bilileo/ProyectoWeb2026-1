@@ -26,7 +26,7 @@ export default function AdminDashboard() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [mounted, setMounted] = useState(false);
   
-  // Nuevos estados para la búsqueda y el filtrado
+  // Filtros
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
@@ -45,18 +45,18 @@ export default function AdminDashboard() {
     return null;
   }
 
-  // Estadísticas globales (no se ven afectadas por el filtro)
+  // Cálculos para los stats
   const productCount = products?.length || 0;
   const totalStock = products?.reduce((sum, p) => sum + p.stock, 0) || 0;
   const lowStockCount = products?.filter((p) => p.stock < 5).length || 0;
 
-  // 1. Mapeamos los productos para incluir el nombre de la categoría
+  // Mapeamos los productos para incluir el nombre de la categoría
   const productsWithCategory = products.map((p) => ({
     ...p,
     categories: { name: categories.find((c) => c.id === p.category_id)?.name || 'Sin categoría' },
   }));
 
-  // 2. Filtramos la lista según la búsqueda y la categoría seleccionada
+  // Filtramos la lista según la búsqueda y la categoría seleccionada
   const filteredProducts = productsWithCategory.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -89,7 +89,7 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* Products Section */}
+          {/* Inventario */}
           <div>
             <div className="mb-6">
               <h2 className="text-2xl font-semibold text-slate-900">Inventario</h2>
@@ -98,7 +98,7 @@ export default function AdminDashboard() {
 
             <ProductForm categories={categories} onProductCreated={handleProductCreated} />
 
-            {/* --- BARRA DE BÚSQUEDA Y FILTROS --- */}
+            {/* Filtros */}
             <div className="bg-white p-3 rounded-lg shadow-sm border border-slate-200 mb-6 mt-8">
               <div className="flex flex-col md:flex-row gap-3 justify-between items-center">
                 
@@ -118,7 +118,7 @@ export default function AdminDashboard() {
                   />
                 </div>
 
-                {/* Chips de Categorías */}
+                {/* Categorías */}
                 <div className="flex gap-1.5 overflow-x-auto w-full md:w-auto hide-scrollbar">
                   <button
                     onClick={() => setSelectedCategory('all')}
@@ -143,7 +143,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            {/* Products Grid */}
+            {/* Product Grid */}
             {filteredProducts && filteredProducts.length > 0 ? (
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                 {filteredProducts.map((product) => (

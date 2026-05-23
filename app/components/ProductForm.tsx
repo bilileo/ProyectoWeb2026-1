@@ -140,7 +140,7 @@ export default function ProductForm({
 
             <form ref={formRef} onSubmit={handleSubmit} className="p-6 space-y-5">
               
-              {/* Fila 1: Nombre */}
+              {/* Nombre */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1.5">Nombre del Producto</label>
                 <input
@@ -155,7 +155,7 @@ export default function ProductForm({
                 {errors.name && <p className="text-xs text-red-600 mt-1 font-medium">{errors.name}</p>}
               </div>
 
-              {/* Fila 2: Precio y Stock */}
+              {/* Precio y Stock */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase mb-1.5">Precio</label>
@@ -192,7 +192,7 @@ export default function ProductForm({
                 </div>
               </div>
 
-              {/* Fila 3: Categoría y Código de Barras */}
+              {/* Categoría y Código de Barras */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase mb-1.5">Categoría</label>
@@ -225,7 +225,7 @@ export default function ProductForm({
                 </div>
               </div>
 
-              {/* Fila 4: Descripción */}
+              {/* Descripción */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1.5">Descripción</label>
                 <textarea
@@ -240,7 +240,7 @@ export default function ProductForm({
                 {errors.description && <p className="text-xs text-red-600 mt-1 font-medium">{errors.description}</p>}
               </div>
 
-              {/* Fila 5: Imagen */}
+              {/* Imagen */}
               <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg">
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-2">Fotografía (Opcional)</label>
                 

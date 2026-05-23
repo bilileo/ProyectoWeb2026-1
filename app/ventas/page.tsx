@@ -41,7 +41,7 @@ export default function SalesDashboard() {
   const [amountPaid, setAmountPaid] = useState<string>('');
   const [lastSale, setLastSale] = useState<SaleRecord | null>(null);
 
-  // --- ESTADOS DEL TOAST ---
+  // Toast Notification
   const [toast, setToast] = useState<{ message: string; type: 'error' | 'success' } | null>(null);
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -60,7 +60,7 @@ export default function SalesDashboard() {
 
   if (!mounted) return null;
 
-  // --- LÓGICA DEL CARRITO ---
+  // Lógica de la lista de productos
   const addToCart = (product: Product) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.id === product.id);
@@ -92,7 +92,7 @@ export default function SalesDashboard() {
     );
   };
 
-  // --- LÓGICA DEL ESCÁNER ---
+  // Lógica de escaneo de código de barras
   const handleBarcodeScan = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -119,7 +119,7 @@ export default function SalesDashboard() {
   const handleClearClick = () => setShowClearConfirm(true);
   const confirmClearCart = () => { setCart([]); setShowClearConfirm(false); };
 
-  // --- LÓGICA DE COBRO ---
+  // Lógica de procesamiento de venta
   const cartTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const change = parseFloat(amountPaid || '0') - cartTotal;
   const isPaymentValid = parseFloat(amountPaid || '0') >= cartTotal;
@@ -153,7 +153,7 @@ export default function SalesDashboard() {
         
         <main className="flex-1 w-full max-w-7xl mx-auto p-2 sm:p-4 flex flex-col lg:flex-row gap-3 sm:gap-4 overflow-hidden">
           
-          {/* --- COLUMNA IZQUIERDA: CATÁLOGO --- */}
+          {/* Catalogo de productos */}
           <div className="flex-1 flex flex-col min-h-0 bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
             
             <div className="p-2 sm:p-3 border-b border-slate-100 bg-slate-50 shrink-0">
@@ -257,7 +257,7 @@ export default function SalesDashboard() {
             </div>
           </div>
 
-          {/* --- COLUMNA DERECHA: TICKET --- */}
+          {/* Ticket Actual */}
           <div className="w-full lg:w-[320px] xl:w-[360px] flex flex-col shrink-0 bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
             
             <div className="p-2.5 border-b border-slate-100 bg-slate-50 flex justify-between items-center shrink-0">
@@ -320,7 +320,7 @@ export default function SalesDashboard() {
         </main>
       </div>
 
-      {/* --- TOAST NOTIFICATION --- */}
+      {/* Toast Notification */}
       <div className="print:hidden">
         {toast && (
           <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] animate-fade-in-up">
@@ -342,7 +342,7 @@ export default function SalesDashboard() {
         )}
       </div>
 
-      {/* --- MODALES (CONFIRMAR, COBRO Y TICKET PDF) --- */}
+      {/* Modales (Confirmar, Cobro y Ticket PDF) */}
       <div className="print:hidden">
         {showClearConfirm && (
           <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">

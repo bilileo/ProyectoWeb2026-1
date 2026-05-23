@@ -97,8 +97,6 @@ export function initializeData() {
   getCategories(); // Inicializa categorías por defecto
 }
 
-// --- AGREGAR AL FINAL DE lib/storage.ts ---
-
 export interface SaleRecord {
   id: string;
   items: { id: string; name: string; price: number; quantity: number }[];
@@ -114,14 +112,13 @@ export function getSales(): SaleRecord[] {
   return sales ? JSON.parse(sales) : [];
 }
 
-// Reemplaza tu antigua función processSale por esta:
 export function processSale(cartItems: { id: string; name: string; price: number; quantity: number }[], amountPaid: number, total: number) {
   if (typeof window === 'undefined') return null;
   
   const products = getProducts();
   let isValidSale = true;
   
-  // 1. Descontar Stock
+  // Descontar Stock
   const updatedProducts = products.map(product => {
     const cartItem = cartItems.find(item => item.id === product.id);
     if (cartItem) {
@@ -132,15 +129,15 @@ export function processSale(cartItems: { id: string; name: string; price: number
     return product;
   });
 
-  if (!isValidSale) return null; // Falla si no hay stock
+  if (!isValidSale) return null;
 
-  // 2. Guardar el nuevo stock
+  // Guardar el nuevo stock
   localStorage.setItem('products', JSON.stringify(updatedProducts));
 
-  // 3. Crear el registro de la venta
+  // Crear el registro de la venta
   const sales = getSales();
   const newSale: SaleRecord = {
-    id: `TKT-${Date.now().toString().slice(-6)}`, // Genera un ID estilo TKT-123456
+    id: `TKT-${Date.now().toString().slice(-6)}`, // ID único para el ticket
     items: cartItems,
     total,
     amountPaid,
