@@ -1,26 +1,19 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Ocultar scrollbar pero mantener la funcionalidad de scroll */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE y Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translate(-50%, 1rem); }
+  to { opacity: 1; transform: translate(-50%, 0); }
 }
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.animate-fade-in-up {
+  animation: fadeInUp 0.3s ease-out forwards;
 }
